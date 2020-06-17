@@ -140,4 +140,26 @@ public class GuessNumberGameServiceTest {
 
         assertThat(userScores).isEqualTo(3);
     }
+
+    @Test
+    public void should_minus_3_scores_when_guess_failed() {
+        Answer answer = new Answer(Arrays.asList("1 2 3 5".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+        guessNumberGame.setAnswer(answer);
+        String userId = "4";
+        GameUserInfo gameUserInfoNew = guessNumberGameService.register(userId);
+
+        GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
+
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+
+        int userScores = guessNumberGameService.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
+
+        assertThat(userScores).isEqualTo(-3);
+    }
 }
