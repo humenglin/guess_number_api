@@ -2,6 +2,7 @@ package com.twschool.practice.service;
 
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
+import com.twschool.practice.exception.UserIsExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 public class GuessNumberGameService {
+    private static List<GameUserInfo> gameUserInfos = new ArrayList<>();
     private GuessNumberGame guessNumberGame;
 
     @Autowired
@@ -24,6 +26,13 @@ public class GuessNumberGameService {
     }
 
     public GameUserInfo register(String userName) {
-        return new GameUserInfo(userName);
+        for (GameUserInfo gameUserInfoExist: gameUserInfos) {
+            if (userName.equals(gameUserInfoExist.getUserId())) {
+                throw new UserIsExistException();
+            }
+        }
+        GameUserInfo gameUserInfo = new GameUserInfo(userName);
+        gameUserInfos.add(gameUserInfo);
+        return gameUserInfo;
     }
 }

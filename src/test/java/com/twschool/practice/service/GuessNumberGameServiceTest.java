@@ -4,6 +4,7 @@ import com.twschool.practice.domain.Answer;
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
 import com.twschool.practice.domain.RandomAnswerGenerator;
+import com.twschool.practice.exception.UserIsExistException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,5 +52,14 @@ public class GuessNumberGameServiceTest {
 
         Assert.assertEquals(userName, gameUserInfo.getUserId());
         Assert.assertEquals(0, gameUserInfo.getScores());
+    }
+
+    @Test(expected = UserIsExistException.class)
+    public void should_throw_exception_when_register_given_userid_is_exist() {
+        String userNameFirst = "name";
+        GameUserInfo gameUserInfo = guessNumberGameService.register(userNameFirst);
+
+        String userNameSecond = "name";
+        guessNumberGameService.register(userNameSecond);
     }
 }
