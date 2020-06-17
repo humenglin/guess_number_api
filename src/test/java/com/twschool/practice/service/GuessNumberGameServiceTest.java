@@ -55,6 +55,7 @@ public class GuessNumberGameServiceTest {
 
         Assert.assertEquals(userName, gameUserInfo.getUserId());
         Assert.assertEquals(0, gameUserInfo.getScores());
+        Assert.assertEquals(0, gameUserInfo.getSuccessStayTimes());
         assertThat(guessNumberGameRepository.getGameUserInfos()).contains(gameUserInfo);
     }
 
