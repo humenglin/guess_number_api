@@ -1,5 +1,6 @@
 package com.twschool.practice.service;
 
+import com.twschool.practice.domain.GameStatus;
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
 import com.twschool.practice.exception.UserIsExistException;
@@ -34,5 +35,9 @@ public class GuessNumberGameService {
         GameUserInfo gameUserInfo = new GameUserInfo(userName);
         gameUserInfos.add(gameUserInfo);
         return gameUserInfo;
+    }
+
+    public GuessNumberGame start(String userId) {
+        return guessNumberGame;
     }
 }

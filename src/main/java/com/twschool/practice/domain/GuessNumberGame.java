@@ -1,7 +1,10 @@
 package com.twschool.practice.domain;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class GuessNumberGame {
     private Answer answer;
     private GameStatus status = GameStatus.CONTINUED;

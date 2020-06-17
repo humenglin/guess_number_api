@@ -1,9 +1,8 @@
 package com.twschool.practice.service;
 
-import com.twschool.practice.domain.Answer;
-import com.twschool.practice.domain.GameUserInfo;
-import com.twschool.practice.domain.GuessNumberGame;
-import com.twschool.practice.domain.RandomAnswerGenerator;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.twschool.practice.domain.*;
 import com.twschool.practice.exception.UserIsExistException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -61,5 +60,19 @@ public class GuessNumberGameServiceTest {
 
         String userNameSecond = "name";
         guessNumberGameService.register(userNameSecond);
+    }
+
+    @Test
+    public void should_return_leftTryTimes_is_6_and_GameStatus_CONTINUED_and_answer_is_1234_when_start() {
+        Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+        guessNumberGame.setAnswer(answer);
+        String userId = "1";
+
+        GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
+
+        assertThat(answer).isEqualToComparingFieldByField(guessNumberGameStart.getAnswer());
+        assertThat(6).isEqualTo(guessNumberGameStart.getLeftTryTimes());
+        assertThat(GameStatus.CONTINUED).isEqualTo(guessNumberGameStart.getStatus());
     }
 }
