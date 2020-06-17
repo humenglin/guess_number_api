@@ -45,6 +45,10 @@ public class GuessNumberGameService {
         if (gameUserInfo.getSuccessStayTimes() % 3 == 0) {
             gameUserInfo.setSuccessStayTimes(gameUserInfo.getSuccessStayTimes() + 2);
         }
+
+        if (gameUserInfo.getSuccessStayTimes() % 5 == 0) {
+            gameUserInfo.setSuccessStayTimes(gameUserInfo.getSuccessStayTimes() + 3);
+        }
     }
 
     public GameUserInfo register(String userName) {
