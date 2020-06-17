@@ -1,9 +1,7 @@
 package com.twschool.practice.service;
 
-import com.twschool.practice.domain.GameUserInfo;
-import com.twschool.practice.domain.GuessNumberGame;
-import com.twschool.practice.domain.GuessNumberGameRepository;
-import com.twschool.practice.domain.UserGameMapInfo;
+import com.twschool.practice.constants.GuessNumberGameConstants;
+import com.twschool.practice.domain.*;
 import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
 import com.twschool.practice.exception.UserIsNotExistException;
@@ -29,7 +27,21 @@ public class GuessNumberGameService {
             throw new TheGameIsOverException();
         }
         List<String> userAnswerNumbers = Arrays.asList(userAnswer.split(" "));
-        return guessNumberGame.guess(userAnswerNumbers);
+        String result = guessNumberGame.guess(userAnswerNumbers);
+        controllerUser(userId, guessNumberGame.getStatus());
+        return result;
+    }
+
+    private void controllerUser(String userId, GameStatus status) {
+        GameUserInfo gameUserInfo = guessNumberGameRepository.getGameUserInfo(userId);
+        if (GameStatus.SUCCEED == status) {
+            gameUserInfo.setScores(gameUserInfo.getScores() + GuessNumberGameConstants.CHANGE_SCORES_PER_GAME);
+            gameUserInfo.setSuccessStayTimes(gameUserInfo.getSuccessStayTimes() + 1);
+        }
+        if (GameStatus.FAILED == status) {
+            gameUserInfo.setScores(gameUserInfo.getScores() - GuessNumberGameConstants.CHANGE_SCORES_PER_GAME);
+            gameUserInfo.setSuccessStayTimes(0);
+        }
     }
 
     public GameUserInfo register(String userName) {

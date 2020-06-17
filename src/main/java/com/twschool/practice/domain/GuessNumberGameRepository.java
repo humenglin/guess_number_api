@@ -41,4 +41,13 @@ public class GuessNumberGameRepository {
         }
         return null;
     }
+
+    public GameUserInfo getGameUserInfo(String userId) {
+        for (GameUserInfo gameUserInfo : gameUserInfos) {
+            if (userId.equals(gameUserInfo.getUserId())) {
+                return gameUserInfo;
+            }
+        }
+        return null;
+    }
 }

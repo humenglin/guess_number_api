@@ -128,7 +128,7 @@ public class GuessNumberGameServiceTest {
     }
 
     @Test
-    public void should_add_3_scores_when_guess_success() {
+    public void should_add_3_scores_and_user_success_stay_times_add_1_when_guess_success() {
         Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
         Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
         guessNumberGame.setAnswer(answer);
@@ -140,8 +140,12 @@ public class GuessNumberGameServiceTest {
         guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
 
         int userScores = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
+        gameUserInfoNew = guessNumberGameRepository.getGameUserInfo(gameUserInfoNew.getUserId());
+        guessNumberGameStart = guessNumberGameRepository.getGuessNumberGame(guessNumberGameStart.getGameId());
 
         assertThat(userScores).isEqualTo(3);
+        assertThat(gameUserInfoNew.getSuccessStayTimes()).isEqualTo(1);
+        assertThat(gameUserInfoNew.getScores()).isEqualTo(3);
     }
 
     @Test
@@ -165,4 +169,5 @@ public class GuessNumberGameServiceTest {
 
         assertThat(userScores).isEqualTo(-3);
     }
+
 }

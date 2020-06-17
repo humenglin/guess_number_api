@@ -1,18 +1,16 @@
 package com.twschool.practice.domain;
 
+import com.twschool.practice.constants.GuessNumberGameConstants;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class GuessNumberGame {
     private static int gameId = 0;
-    public static final int CHANGE_SCORES = 3;
     private Answer answer;
     private GameStatus status = GameStatus.CONTINUED;
-    private int MAX_TRY_TIMES = 6;
-    private int leftTryTimes = MAX_TRY_TIMES;
+    private int leftTryTimes = GuessNumberGameConstants.MAX_TRY_TIMES;
     private RandomAnswerGenerator randomAnswerGenerator;
     private int gameScores = 0;
 
@@ -47,10 +45,10 @@ public class GuessNumberGame {
 
     private void controllerScore(GameStatus status) {
         if (GameStatus.SUCCEED == status) {
-            gameScores += CHANGE_SCORES;
+            gameScores += GuessNumberGameConstants.CHANGE_SCORES_PER_GAME;
         }
         if (GameStatus.FAILED == status) {
-            gameScores -= CHANGE_SCORES;
+            gameScores -= GuessNumberGameConstants.CHANGE_SCORES_PER_GAME;
         }
     }
 
