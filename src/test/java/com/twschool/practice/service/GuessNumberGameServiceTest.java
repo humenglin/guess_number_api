@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.twschool.practice.domain.*;
 import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
+import com.twschool.practice.exception.UserIsNotExistException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +53,7 @@ public class GuessNumberGameServiceTest {
 
         Assert.assertEquals(userName, gameUserInfo.getUserId());
         Assert.assertEquals(0, gameUserInfo.getScores());
+        assertThat(guessNumberGameService.getGameUserInfos()).contains(gameUserInfo);
     }
 
     @Test(expected = UserIsExistException.class)
@@ -98,12 +100,22 @@ public class GuessNumberGameServiceTest {
         guessNumberGameService.guess(userId, gameId, userAnswer);
     }
 
+    @Test(expected = UserIsNotExistException.class)
+    public void should_throw_exception_when_start_given_user_is_not_existed() {
+        Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+        guessNumberGame.setAnswer(answer);
+        String userId = "no_existed";
+
+        guessNumberGameService.start(userId);
+    }
+
     @Test
     public void should_save_game_info_when_start() {
         Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
         Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
         guessNumberGame.setAnswer(answer);
-        String userId = "1";
+        String userId = "2";
         guessNumberGameService.register(userId);
 
         GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);

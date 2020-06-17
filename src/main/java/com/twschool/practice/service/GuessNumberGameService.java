@@ -4,6 +4,7 @@ import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
 import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
+import com.twschool.practice.exception.UserIsNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class GuessNumberGameService {
     @Autowired
     public GuessNumberGameService(GuessNumberGame guessNumberGame) {
         this.guessNumberGame = guessNumberGame;
+    }
+
+    public List<GameUserInfo> getGameUserInfos() {
+        return gameUserInfos;
     }
 
     public List<GuessNumberGame> getGuessNumberGames() {
@@ -50,12 +55,16 @@ public class GuessNumberGameService {
             throw new UserIsExistException();
         }
 
+        boolean existed = false;
         for (GameUserInfo gameUserInfoExist: gameUserInfos) {
             if (userId.equals(gameUserInfoExist.getUserId())) {
-                continue;
+                existed = true;
             }
-            throw new UserIsExistException();
         }
+        if (!existed) {
+            throw new UserIsNotExistException();
+        }
+
         guessNumberGames.add(guessNumberGame);
         return guessNumberGame;
     }
