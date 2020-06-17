@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class GuessNumberGame {
+    public static int gameId = 0;
     public static final int CHANGE_SCORES = 3;
     private Answer answer;
     private GameStatus status = GameStatus.CONTINUED;
@@ -28,6 +29,7 @@ public class GuessNumberGame {
     public GuessNumberGame(RandomAnswerGenerator randomAnswerGenerator) {
         this.randomAnswerGenerator = randomAnswerGenerator;
         this.answer = randomAnswerGenerator.generateAnswer();
+        this.gameId ++;
     }
 
     public String guess(List<String> userAnswerNumbers) {
