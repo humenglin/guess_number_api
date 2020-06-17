@@ -97,6 +97,5 @@ public class GuessNumberGameTest {
     @Test
     public void should_save_gameinfo_when_init() {
         Assert.assertNotSame(0, guessNumberGame.getGameId());
-        Assert.assertNotSame(0, guessNumberGame.getGuessNumberGames().size());
     }
 }

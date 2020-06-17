@@ -138,5 +138,6 @@ public class GuessNumberGameServiceTest {
 
         int userScores = guessNumberGameService.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
 
+        assertThat(userScores).isEqualTo(3);
     }
 }

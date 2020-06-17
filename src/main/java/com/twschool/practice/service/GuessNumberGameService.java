@@ -17,6 +17,7 @@ import java.util.List;
 public class GuessNumberGameService {
     private static List<GameUserInfo> gameUserInfos = new ArrayList<>();
     private static List<UserGameMapInfo> userGameMapInfos = new ArrayList<>();
+    private static List<GuessNumberGame> guessNumberGames = new ArrayList<>();
     private GuessNumberGame guessNumberGame;
 
     @Autowired
@@ -30,6 +31,10 @@ public class GuessNumberGameService {
 
     public List<UserGameMapInfo> getUserGameMapInfos() {
         return userGameMapInfos;
+    }
+
+    public List<GuessNumberGame> getGuessNumberGames() {
+        return guessNumberGames;
     }
 
     public String guess(String userId, int gameId, String userAnswer) {
@@ -68,15 +73,25 @@ public class GuessNumberGameService {
 
         UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGame.getGameId());
         userGameMapInfos.add(userGameMapInfo);
+        guessNumberGames.add(guessNumberGame);
         return guessNumberGame;
     }
 
     public int getScores(String userId, int gameId) {
         for (UserGameMapInfo userGameMapInfo : userGameMapInfos) {
             if (userId.equals(userGameMapInfo.getUserId()) && gameId == userGameMapInfo.getGameId()) {
-//                return userGameMapInfo.get
+                return getGuessNumberGame(gameId).getGameScores();
             }
         }
         return 0;
+    }
+
+    private GuessNumberGame getGuessNumberGame(int gameId) {
+        for (GuessNumberGame guessNumberGame : guessNumberGames) {
+            if (gameId == guessNumberGame.getGameId()) {
+                return guessNumberGame;
+            }
+        }
+        return null;
     }
 }
