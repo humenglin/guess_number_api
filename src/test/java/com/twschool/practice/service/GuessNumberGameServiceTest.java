@@ -111,7 +111,7 @@ public class GuessNumberGameServiceTest {
     }
 
     @Test
-    public void should_save_game_info_when_start() {
+    public void should_save_user_game_map_info_when_start() {
         Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
         Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
         guessNumberGame.setAnswer(answer);
@@ -120,6 +120,7 @@ public class GuessNumberGameServiceTest {
 
         GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
 
-        assertThat(guessNumberGameService.getGuessNumberGames()).contains(guessNumberGameStart);
+        UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGameStart.getGameId());
+        assertThat(guessNumberGameService.getUserGameMapInfos()).contains(userGameMapInfo);
     }
 }

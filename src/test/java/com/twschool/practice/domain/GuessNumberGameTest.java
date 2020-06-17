@@ -90,6 +90,6 @@ public class GuessNumberGameTest {
 
     @Test
     public void should_generate_gameid_when_init() {
-        Assert.assertNotSame(0, guessNumberGame.gameId);
+        Assert.assertNotSame(0, guessNumberGame.getGameId());
     }
 }

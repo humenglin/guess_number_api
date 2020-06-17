@@ -2,6 +2,7 @@ package com.twschool.practice.service;
 
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
+import com.twschool.practice.domain.UserGameMapInfo;
 import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
 import com.twschool.practice.exception.UserIsNotExistException;
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class GuessNumberGameService {
     private static List<GameUserInfo> gameUserInfos = new ArrayList<>();
-    private static List<GuessNumberGame> guessNumberGames = new ArrayList<>();
+    private static List<UserGameMapInfo> userGameMapInfos = new ArrayList<>();
     private GuessNumberGame guessNumberGame;
 
     @Autowired
@@ -27,8 +28,8 @@ public class GuessNumberGameService {
         return gameUserInfos;
     }
 
-    public List<GuessNumberGame> getGuessNumberGames() {
-        return guessNumberGames;
+    public List<UserGameMapInfo> getUserGameMapInfos() {
+        return userGameMapInfos;
     }
 
     public String guess(String userId, String gameId, String userAnswer) {
@@ -65,7 +66,8 @@ public class GuessNumberGameService {
             throw new UserIsNotExistException();
         }
 
-        guessNumberGames.add(guessNumberGame);
+        UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGame.getGameId());
+        userGameMapInfos.add(userGameMapInfo);
         return guessNumberGame;
     }
 }
