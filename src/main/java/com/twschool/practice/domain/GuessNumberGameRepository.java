@@ -50,4 +50,16 @@ public class GuessNumberGameRepository {
         }
         return null;
     }
+
+    public void saveGameUserInfo(GameUserInfo gameUserInfo) {
+        gameUserInfos.add(gameUserInfo);
+    }
+
+    public void saveGuessNumberGame(GuessNumberGame guessNumberGame) {
+        guessNumberGames.add(guessNumberGame);
+    }
+
+    public void saveUserGameMapInfo(UserGameMapInfo userGameMapInfo) {
+        userGameMapInfos.add(userGameMapInfo);
+    }
 }

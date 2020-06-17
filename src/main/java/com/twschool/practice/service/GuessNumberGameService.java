@@ -59,7 +59,7 @@ public class GuessNumberGameService {
             }
         }
         GameUserInfo gameUserInfo = new GameUserInfo(userName);
-        gameUserInfos.add(gameUserInfo);
+        guessNumberGameRepository.saveGameUserInfo(gameUserInfo);
         return gameUserInfo;
     }
 
@@ -83,8 +83,8 @@ public class GuessNumberGameService {
 
         GuessNumberGame guessNumberGame = new GuessNumberGame(new RandomAnswerGenerator());
         UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGame.getGameId());
-        userGameMapInfos.add(userGameMapInfo);
-        guessNumberGames.add(guessNumberGame);
+        guessNumberGameRepository.saveGuessNumberGame(guessNumberGame);
+        guessNumberGameRepository.saveUserGameMapInfo(userGameMapInfo);
         return guessNumberGame;
     }
 }
