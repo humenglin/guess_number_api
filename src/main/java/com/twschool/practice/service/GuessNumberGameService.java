@@ -2,6 +2,7 @@ package com.twschool.practice.service;
 
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
+import com.twschool.practice.domain.GuessNumberGameRepository;
 import com.twschool.practice.domain.UserGameMapInfo;
 import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
@@ -9,32 +10,18 @@ import com.twschool.practice.exception.UserIsNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class GuessNumberGameService {
-    private static List<GameUserInfo> gameUserInfos = new ArrayList<>();
-    private static List<UserGameMapInfo> userGameMapInfos = new ArrayList<>();
-    private static List<GuessNumberGame> guessNumberGames = new ArrayList<>();
     private GuessNumberGame guessNumberGame;
+    private GuessNumberGameRepository guessNumberGameRepository;
 
     @Autowired
-    public GuessNumberGameService(GuessNumberGame guessNumberGame) {
+    public GuessNumberGameService(GuessNumberGame guessNumberGame, GuessNumberGameRepository guessNumberGameRepository) {
         this.guessNumberGame = guessNumberGame;
-    }
-
-    public List<GameUserInfo> getGameUserInfos() {
-        return gameUserInfos;
-    }
-
-    public List<UserGameMapInfo> getUserGameMapInfos() {
-        return userGameMapInfos;
-    }
-
-    public List<GuessNumberGame> getGuessNumberGames() {
-        return guessNumberGames;
+        this.guessNumberGameRepository = guessNumberGameRepository;
     }
 
     public String guess(String userId, int gameId, String userAnswer) {
@@ -46,6 +33,7 @@ public class GuessNumberGameService {
     }
 
     public GameUserInfo register(String userName) {
+        List<GameUserInfo> gameUserInfos = guessNumberGameRepository.getGameUserInfos();
         for (GameUserInfo gameUserInfoExist: gameUserInfos) {
             if (userName.equals(gameUserInfoExist.getUserId())) {
                 throw new UserIsExistException();
@@ -57,6 +45,9 @@ public class GuessNumberGameService {
     }
 
     public GuessNumberGame start(String userId) {
+        List<GameUserInfo> gameUserInfos = guessNumberGameRepository.getGameUserInfos();
+        List<UserGameMapInfo> userGameMapInfos = guessNumberGameRepository.getUserGameMapInfos();
+        List<GuessNumberGame> guessNumberGames = guessNumberGameRepository.getGuessNumberGames();
         if (gameUserInfos.size() == 0) {
             throw new UserIsExistException();
         }
@@ -75,23 +66,5 @@ public class GuessNumberGameService {
         userGameMapInfos.add(userGameMapInfo);
         guessNumberGames.add(guessNumberGame);
         return guessNumberGame;
-    }
-
-    public int getScores(String userId, int gameId) {
-        for (UserGameMapInfo userGameMapInfo : userGameMapInfos) {
-            if (userId.equals(userGameMapInfo.getUserId()) && gameId == userGameMapInfo.getGameId()) {
-                return getGuessNumberGame(gameId).getGameScores();
-            }
-        }
-        return 0;
-    }
-
-    private GuessNumberGame getGuessNumberGame(int gameId) {
-        for (GuessNumberGame guessNumberGame : guessNumberGames) {
-            if (gameId == guessNumberGame.getGameId()) {
-                return guessNumberGame;
-            }
-        }
-        return null;
     }
 }

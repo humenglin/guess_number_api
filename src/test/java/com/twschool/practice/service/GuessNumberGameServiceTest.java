@@ -19,6 +19,8 @@ import java.util.Arrays;
 public class GuessNumberGameServiceTest {
     @Spy
     private GuessNumberGame guessNumberGame;
+    @Spy
+    private GuessNumberGameRepository guessNumberGameRepository;
     @Mock
     private RandomAnswerGenerator randomAnswerGenerator;
 
@@ -28,7 +30,7 @@ public class GuessNumberGameServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         guessNumberGame.setRandomAnswerGenerator(randomAnswerGenerator);
-        guessNumberGameService = new GuessNumberGameService(guessNumberGame);
+        guessNumberGameService = new GuessNumberGameService(guessNumberGame, guessNumberGameRepository);
     }
 
     @Test
@@ -53,7 +55,7 @@ public class GuessNumberGameServiceTest {
 
         Assert.assertEquals(userName, gameUserInfo.getUserId());
         Assert.assertEquals(0, gameUserInfo.getScores());
-        assertThat(guessNumberGameService.getGameUserInfos()).contains(gameUserInfo);
+        assertThat(guessNumberGameRepository.getGameUserInfos()).contains(gameUserInfo);
     }
 
     @Test(expected = UserIsExistException.class)
@@ -121,7 +123,7 @@ public class GuessNumberGameServiceTest {
         GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
 
         UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGameStart.getGameId());
-        assertThat(guessNumberGameService.getUserGameMapInfos()).contains(userGameMapInfo);
+        assertThat(guessNumberGameRepository.getUserGameMapInfos()).contains(userGameMapInfo);
     }
 
     @Test
@@ -136,7 +138,7 @@ public class GuessNumberGameServiceTest {
 
         guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
 
-        int userScores = guessNumberGameService.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
+        int userScores = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
 
         assertThat(userScores).isEqualTo(3);
     }
@@ -158,7 +160,7 @@ public class GuessNumberGameServiceTest {
         guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
         guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
 
-        int userScores = guessNumberGameService.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
+        int userScores = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
 
         assertThat(userScores).isEqualTo(-3);
     }
