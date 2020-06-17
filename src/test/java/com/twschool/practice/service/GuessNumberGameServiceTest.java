@@ -3,6 +3,7 @@ package com.twschool.practice.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.twschool.practice.domain.*;
+import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,5 +76,25 @@ public class GuessNumberGameServiceTest {
         assertThat(answer).isEqualToComparingFieldByField(guessNumberGameStart.getAnswer());
         assertThat(6).isEqualTo(guessNumberGameStart.getLeftTryTimes());
         assertThat(GameStatus.CONTINUED).isEqualTo(guessNumberGameStart.getStatus());
+    }
+
+    @Test(expected = TheGameIsOverException.class)
+    public void should_throw_exception_when_times_guess_is_more_than_6() {
+        String userId = "1";
+        String gameId = "1";
+        String userAnswer = "1 2 3 5";
+        Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+        guessNumberGame.setAnswer(answer);
+
+        guessNumberGameService.guess(userId, gameId, userAnswer);
+        guessNumberGameService.guess(userId, gameId, userAnswer);
+        guessNumberGameService.guess(userId, gameId, userAnswer);
+        guessNumberGameService.guess(userId, gameId, userAnswer);
+        guessNumberGameService.guess(userId, gameId, userAnswer);
+        guessNumberGameService.guess(userId, gameId, userAnswer);
+        Mockito.verify(guessNumberGame, Mockito.times(6)).guess(Mockito.any());
+
+        guessNumberGameService.guess(userId, gameId, userAnswer);
     }
 }

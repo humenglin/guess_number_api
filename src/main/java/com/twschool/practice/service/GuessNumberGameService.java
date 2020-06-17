@@ -3,6 +3,7 @@ package com.twschool.practice.service;
 import com.twschool.practice.domain.GameStatus;
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
+import com.twschool.practice.exception.TheGameIsOverException;
 import com.twschool.practice.exception.UserIsExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class GuessNumberGameService {
     }
 
     public String guess(String userId, String gameId, String userAnswer) {
+        if (guessNumberGame.getLeftTryTimes() <= 0) {
+            throw new TheGameIsOverException();
+        }
         List<String> userAnswerNumbers = Arrays.asList(userAnswer.split(" "));
         return guessNumberGame.guess(userAnswerNumbers);
     }
