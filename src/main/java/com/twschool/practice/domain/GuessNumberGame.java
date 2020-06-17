@@ -2,11 +2,13 @@ package com.twschool.practice.domain;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class GuessNumberGame {
     private static int gameId = 0;
+    private static List<GuessNumberGame> guessNumberGames = new ArrayList<>();
     public static final int CHANGE_SCORES = 3;
     private Answer answer;
     private GameStatus status = GameStatus.CONTINUED;
@@ -22,6 +24,10 @@ public class GuessNumberGame {
         return gameId;
     }
 
+    public List<GuessNumberGame> getGuessNumberGames() {
+        return guessNumberGames;
+    }
+
     public void setAnswer(Answer answer) {
         this.answer = answer;
     }
@@ -34,6 +40,7 @@ public class GuessNumberGame {
         this.randomAnswerGenerator = randomAnswerGenerator;
         this.answer = randomAnswerGenerator.generateAnswer();
         this.gameId ++;
+        guessNumberGames.add(this);
     }
 
     public String guess(List<String> userAnswerNumbers) {

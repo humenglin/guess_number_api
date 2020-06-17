@@ -34,7 +34,7 @@ public class GuessNumberGameServiceTest {
     @Test
     public void should_return_guess_result_when_guess() {
         String userId = "1";
-        String gameId = "1";
+        int gameId = 1;
         String userAnswer = "1 2 3 4";
         Answer answer = new Answer(Arrays.asList(userAnswer.split(" ")));
         Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
@@ -83,7 +83,7 @@ public class GuessNumberGameServiceTest {
     @Test(expected = TheGameIsOverException.class)
     public void should_throw_exception_when_times_guess_is_more_than_6() {
         String userId = "1";
-        String gameId = "1";
+        int gameId = 1;
         String userAnswer = "1 2 3 5";
         Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
         Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
@@ -122,5 +122,21 @@ public class GuessNumberGameServiceTest {
 
         UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGameStart.getGameId());
         assertThat(guessNumberGameService.getUserGameMapInfos()).contains(userGameMapInfo);
+    }
+
+    @Test
+    public void should_add_3_scores_when_guess_success() {
+        Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+        guessNumberGame.setAnswer(answer);
+        String userId = "3";
+        GameUserInfo gameUserInfoNew = guessNumberGameService.register(userId);
+
+        GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
+
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId(), "1 2 3 4");
+
+        int userScores = guessNumberGameService.getScores(gameUserInfoNew.getUserId(), guessNumberGameStart.getGameId());
+
     }
 }

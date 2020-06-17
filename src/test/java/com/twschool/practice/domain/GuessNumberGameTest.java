@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GuessNumberGameTest {
     
@@ -91,5 +92,11 @@ public class GuessNumberGameTest {
     @Test
     public void should_generate_gameid_when_init() {
         Assert.assertNotSame(0, guessNumberGame.getGameId());
+    }
+
+    @Test
+    public void should_save_gameinfo_when_init() {
+        Assert.assertNotSame(0, guessNumberGame.getGameId());
+        Assert.assertNotSame(0, guessNumberGame.getGuessNumberGames().size());
     }
 }

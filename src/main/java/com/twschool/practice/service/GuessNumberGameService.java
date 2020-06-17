@@ -32,7 +32,7 @@ public class GuessNumberGameService {
         return userGameMapInfos;
     }
 
-    public String guess(String userId, String gameId, String userAnswer) {
+    public String guess(String userId, int gameId, String userAnswer) {
         if (guessNumberGame.getLeftTryTimes() <= 0) {
             throw new TheGameIsOverException();
         }
@@ -69,5 +69,14 @@ public class GuessNumberGameService {
         UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGame.getGameId());
         userGameMapInfos.add(userGameMapInfo);
         return guessNumberGame;
+    }
+
+    public int getScores(String userId, int gameId) {
+        for (UserGameMapInfo userGameMapInfo : userGameMapInfos) {
+            if (userId.equals(userGameMapInfo.getUserId()) && gameId == userGameMapInfo.getGameId()) {
+//                return userGameMapInfo.get
+            }
+        }
+        return 0;
     }
 }
