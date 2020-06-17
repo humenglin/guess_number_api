@@ -6,11 +6,13 @@ import java.util.List;
 
 @Data
 public class GuessNumberGame {
+    public static final int CHANGE_SCORES = 3;
     private Answer answer;
     private GameStatus status = GameStatus.CONTINUED;
     private int MAX_TRY_TIMES = 6;
     private int leftTryTimes = MAX_TRY_TIMES;
     private RandomAnswerGenerator randomAnswerGenerator;
+    private int gameScores = 0;
 
     public GuessNumberGame() {
     }
@@ -32,7 +34,17 @@ public class GuessNumberGame {
         String result = answer.check(userAnswerNumbers);
         decreaseTryTimes();
         modifyStatus(result);
+        controllerScore(status);
         return result;
+    }
+
+    private void controllerScore(GameStatus status) {
+        if (GameStatus.SUCCEED == status) {
+            gameScores += CHANGE_SCORES;
+        }
+        if (GameStatus.FAILED == status) {
+            gameScores -= CHANGE_SCORES;
+        }
     }
 
     private void modifyStatus(String result) {

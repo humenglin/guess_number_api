@@ -69,4 +69,10 @@ public class GuessNumberGameTest {
         Assert.assertEquals(GameStatus.FAILED, gameStatus);
     }
 
+    @Test
+    public void should_return_3_scores_when_success() {
+        guessNumberGame.guess(Arrays.asList("1", "2", "3", "4"));
+
+        Assert.assertEquals(3, guessNumberGame.getGameScores());
+    }
 }
