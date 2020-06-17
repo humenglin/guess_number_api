@@ -97,4 +97,17 @@ public class GuessNumberGameServiceTest {
 
         guessNumberGameService.guess(userId, gameId, userAnswer);
     }
+
+    @Test
+    public void should_save_game_info_when_start() {
+        Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+        guessNumberGame.setAnswer(answer);
+        String userId = "1";
+        guessNumberGameService.register(userId);
+
+        GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
+
+        assertThat(guessNumberGameService.getGuessNumberGames()).contains(guessNumberGameStart);
+    }
 }

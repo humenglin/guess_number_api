@@ -1,6 +1,5 @@
 package com.twschool.practice.service;
 
-import com.twschool.practice.domain.GameStatus;
 import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
 import com.twschool.practice.exception.TheGameIsOverException;
@@ -15,11 +14,16 @@ import java.util.List;
 @Service
 public class GuessNumberGameService {
     private static List<GameUserInfo> gameUserInfos = new ArrayList<>();
+    private static List<GuessNumberGame> guessNumberGames = new ArrayList<>();
     private GuessNumberGame guessNumberGame;
 
     @Autowired
     public GuessNumberGameService(GuessNumberGame guessNumberGame) {
         this.guessNumberGame = guessNumberGame;
+    }
+
+    public List<GuessNumberGame> getGuessNumberGames() {
+        return guessNumberGames;
     }
 
     public String guess(String userId, String gameId, String userAnswer) {
@@ -52,7 +56,7 @@ public class GuessNumberGameService {
             }
             throw new UserIsExistException();
         }
-
+        guessNumberGames.add(guessNumberGame);
         return guessNumberGame;
     }
 }
