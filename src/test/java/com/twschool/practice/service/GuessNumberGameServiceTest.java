@@ -290,4 +290,53 @@ public class GuessNumberGameServiceTest {
         assertThat(gameUserInfoNew.getSuccessStayTimes()).isEqualTo(5);
         assertThat(gameUserInfoNew.getScores()).isEqualTo(20);
     }
+
+    @Test
+    public void when_user_win_4th_and_failed_once() {
+        String userId = "8";
+        GameUserInfo gameUserInfoNew = guessNumberGameService.register(userId);
+
+        Answer answer = new Answer(Arrays.asList("1 2 3 4".split(" ")));
+        Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
+
+        GuessNumberGame guessNumberGameOnce = guessNumberGameService.start(userId);
+        guessNumberGameOnce.setAnswer(answer);
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameOnce.getGameId(), "1 2 3 4");
+
+        GuessNumberGame guessNumberGameTwice = guessNumberGameService.start(userId);
+        guessNumberGameTwice.setAnswer(answer);
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGameTwice.getGameId(), "1 2 3 4");
+
+        GuessNumberGame guessNumberGame3 = guessNumberGameService.start(userId);
+        guessNumberGame3.setAnswer(answer);
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGame3.getGameId(), "1 2 3 4");
+
+        GuessNumberGame guessNumberGame4 = guessNumberGameService.start(userId);
+        guessNumberGame4.setAnswer(answer);
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGame4.getGameId(), "1 2 3 4");
+
+        GuessNumberGame guessNumberGame5 = guessNumberGameService.start(userId);
+        guessNumberGame5.setAnswer(answer);
+        guessNumberGameService.guess(gameUserInfoNew.getUserId(), guessNumberGame5.getGameId(), "1 2 0 4");
+
+        int onceScores = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGameOnce.getGameId());
+        int twiceScores = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGameTwice.getGameId());
+        int scores3 = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGame3.getGameId());
+        int scores4 = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGame4.getGameId());
+        int scores5 = guessNumberGameRepository.getScores(gameUserInfoNew.getUserId(), guessNumberGame5.getGameId());
+        gameUserInfoNew = guessNumberGameRepository.getGameUserInfo(gameUserInfoNew.getUserId());
+
+        assertThat(guessNumberGameRepository.getGuessNumberGames()).contains(guessNumberGameOnce);
+        assertThat(guessNumberGameRepository.getGuessNumberGames()).contains(guessNumberGameTwice);
+        assertThat(guessNumberGameRepository.getGuessNumberGames()).contains(guessNumberGame3);
+        assertThat(guessNumberGameRepository.getGuessNumberGames()).contains(guessNumberGame4);
+        assertThat(guessNumberGameRepository.getGuessNumberGames()).contains(guessNumberGame5);
+        assertThat(onceScores).isEqualTo(3);
+        assertThat(twiceScores).isEqualTo(3);
+        assertThat(scores3).isEqualTo(3);
+        assertThat(scores4).isEqualTo(3);
+        assertThat(scores5).isEqualTo(0);
+        assertThat(gameUserInfoNew.getSuccessStayTimes()).isEqualTo(0);
+        assertThat(gameUserInfoNew.getScores()).isEqualTo(17);
+    }
 }
