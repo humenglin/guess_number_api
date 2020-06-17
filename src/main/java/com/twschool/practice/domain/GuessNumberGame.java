@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class GuessNumberGame {
     private static int gameId = 0;
+    private int myGameId = 0;
     private Answer answer;
     private GameStatus status = GameStatus.CONTINUED;
     private int leftTryTimes = GuessNumberGameConstants.MAX_TRY_TIMES;
@@ -33,6 +34,7 @@ public class GuessNumberGame {
         this.randomAnswerGenerator = randomAnswerGenerator;
         this.answer = randomAnswerGenerator.generateAnswer();
         this.gameId ++;
+        this.myGameId = gameId;
     }
 
     public String guess(List<String> userAnswerNumbers) {

@@ -42,12 +42,12 @@ public class GuessNumberGameService {
             gameUserInfo.setSuccessStayTimes(0);
         }
 
-        if (gameUserInfo.getSuccessStayTimes() % 3 == 0) {
-            gameUserInfo.setSuccessStayTimes(gameUserInfo.getSuccessStayTimes() + 2);
+        if (gameUserInfo.getSuccessStayTimes()/3 != 0 && gameUserInfo.getSuccessStayTimes()%3 == 0) {
+            gameUserInfo.setScores(gameUserInfo.getScores() + GuessNumberGameConstants.CHANGE_SCORES_THREE_GAMES);
         }
 
-        if (gameUserInfo.getSuccessStayTimes() % 5 == 0) {
-            gameUserInfo.setSuccessStayTimes(gameUserInfo.getSuccessStayTimes() + 3);
+        if (gameUserInfo.getSuccessStayTimes()/5 != 0 && gameUserInfo.getSuccessStayTimes()%5 == 0) {
+            gameUserInfo.setScores(gameUserInfo.getScores() + GuessNumberGameConstants.CHANGE_SCORES_FIVE_GAMES);
         }
     }
 
@@ -68,7 +68,7 @@ public class GuessNumberGameService {
         List<UserGameMapInfo> userGameMapInfos = guessNumberGameRepository.getUserGameMapInfos();
         List<GuessNumberGame> guessNumberGames = guessNumberGameRepository.getGuessNumberGames();
         if (gameUserInfos.size() == 0) {
-            throw new UserIsExistException();
+            throw new UserIsNotExistException();
         }
 
         boolean existed = false;

@@ -35,7 +35,7 @@ public class GuessNumberGameRepository {
 
     public GuessNumberGame getGuessNumberGame(int gameId) {
         for (GuessNumberGame guessNumberGame : guessNumberGames) {
-            if (gameId == guessNumberGame.getGameId()) {
+            if (gameId == guessNumberGame.getMyGameId()) {
                 return guessNumberGame;
             }
         }
