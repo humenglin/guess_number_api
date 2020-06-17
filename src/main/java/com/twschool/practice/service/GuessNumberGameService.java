@@ -13,16 +13,15 @@ import java.util.List;
 
 @Service
 public class GuessNumberGameService {
-    private GuessNumberGame guessNumberGame;
     private GuessNumberGameRepository guessNumberGameRepository;
 
     @Autowired
-    public GuessNumberGameService(GuessNumberGame guessNumberGame, GuessNumberGameRepository guessNumberGameRepository) {
-        this.guessNumberGame = guessNumberGame;
+    public GuessNumberGameService(GuessNumberGameRepository guessNumberGameRepository) {
         this.guessNumberGameRepository = guessNumberGameRepository;
     }
 
     public String guess(String userId, int gameId, String userAnswer) {
+        GuessNumberGame guessNumberGame = guessNumberGameRepository.getGuessNumberGame(gameId);
         if (guessNumberGame.getLeftTryTimes() <= 0) {
             throw new TheGameIsOverException();
         }
@@ -41,6 +40,10 @@ public class GuessNumberGameService {
         if (GameStatus.FAILED == status) {
             gameUserInfo.setScores(gameUserInfo.getScores() - GuessNumberGameConstants.CHANGE_SCORES_PER_GAME);
             gameUserInfo.setSuccessStayTimes(0);
+        }
+
+        if (gameUserInfo.getSuccessStayTimes() % 3 == 0) {
+            gameUserInfo.setSuccessStayTimes(gameUserInfo.getSuccessStayTimes() + 2);
         }
     }
 
@@ -74,6 +77,7 @@ public class GuessNumberGameService {
             throw new UserIsNotExistException();
         }
 
+        GuessNumberGame guessNumberGame = new GuessNumberGame(new RandomAnswerGenerator());
         UserGameMapInfo userGameMapInfo = new UserGameMapInfo(userId, guessNumberGame.getGameId());
         userGameMapInfos.add(userGameMapInfo);
         guessNumberGames.add(guessNumberGame);
