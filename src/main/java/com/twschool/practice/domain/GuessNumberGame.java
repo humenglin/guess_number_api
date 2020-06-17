@@ -1,7 +1,5 @@
 package com.twschool.practice.domain;
 
-import com.twschool.practice.domain.GameStatus;
-
 import java.util.List;
 
 public class GuessNumberGame {
@@ -10,6 +8,17 @@ public class GuessNumberGame {
     private int MAX_TRY_TIMES = 6;
     private int leftTryTimes = MAX_TRY_TIMES;
     private RandomAnswerGenerator randomAnswerGenerator;
+
+    public GuessNumberGame() {
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
+
+    public void setRandomAnswerGenerator(RandomAnswerGenerator randomAnswerGenerator) {
+        this.randomAnswerGenerator = randomAnswerGenerator;
+    }
 
     public GuessNumberGame(RandomAnswerGenerator randomAnswerGenerator) {
         this.randomAnswerGenerator = randomAnswerGenerator;
