@@ -335,8 +335,8 @@ public class GuessNumberGameServiceTest {
         assertThat(twiceScores).isEqualTo(3);
         assertThat(scores3).isEqualTo(3);
         assertThat(scores4).isEqualTo(3);
-        assertThat(scores5).isEqualTo(0);
+        assertThat(scores5).isEqualTo(-3);
         assertThat(gameUserInfoNew.getSuccessStayTimes()).isEqualTo(0);
-        assertThat(gameUserInfoNew.getScores()).isEqualTo(17);
+        assertThat(gameUserInfoNew.getScores()).isEqualTo(11);
     }
 }
