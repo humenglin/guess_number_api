@@ -1,6 +1,7 @@
 package com.twschool.practice.service;
 
 import com.twschool.practice.domain.Answer;
+import com.twschool.practice.domain.GameUserInfo;
 import com.twschool.practice.domain.GuessNumberGame;
 import com.twschool.practice.domain.RandomAnswerGenerator;
 import org.junit.Assert;
@@ -41,5 +42,14 @@ public class GuessNumberGameServiceTest {
         String gameResult = guessNumberGameService.guess(userId, gameId, userAnswer);
 
         Assert.assertEquals("4A0B", gameResult);
+    }
+
+    @Test
+    public void should_return_game_user_info_when_register() {
+        String userName = "name";
+        GameUserInfo gameUserInfo = guessNumberGameService.register(userName);
+
+        Assert.assertEquals(userName, gameUserInfo.getUserId());
+        Assert.assertEquals(0, gameUserInfo.getScores());
     }
 }
