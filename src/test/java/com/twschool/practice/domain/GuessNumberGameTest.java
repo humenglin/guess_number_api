@@ -75,4 +75,16 @@ public class GuessNumberGameTest {
 
         Assert.assertEquals(3, guessNumberGame.getGameScores());
     }
+
+    @Test
+    public void should_return_minus_3_scores_when_failed() {
+        guessNumberGame.guess(Arrays.asList("1", "3", "3", "4"));
+        guessNumberGame.guess(Arrays.asList("1", "3", "3", "4"));
+        guessNumberGame.guess(Arrays.asList("1", "3", "3", "4"));
+        guessNumberGame.guess(Arrays.asList("1", "3", "3", "4"));
+        guessNumberGame.guess(Arrays.asList("1", "3", "3", "4"));
+        guessNumberGame.guess(Arrays.asList("1", "3", "3", "4"));
+
+        Assert.assertEquals(-3, guessNumberGame.getGameScores());
+    }
 }
