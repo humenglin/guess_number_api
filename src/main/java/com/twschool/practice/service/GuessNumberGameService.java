@@ -38,6 +38,17 @@ public class GuessNumberGameService {
     }
 
     public GuessNumberGame start(String userId) {
+        if (gameUserInfos.size() == 0) {
+            throw new UserIsExistException();
+        }
+
+        for (GameUserInfo gameUserInfoExist: gameUserInfos) {
+            if (userId.equals(gameUserInfoExist.getUserId())) {
+                continue;
+            }
+            throw new UserIsExistException();
+        }
+
         return guessNumberGame;
     }
 }

@@ -68,6 +68,7 @@ public class GuessNumberGameServiceTest {
         Mockito.when(randomAnswerGenerator.generateAnswer()).thenReturn(answer);
         guessNumberGame.setAnswer(answer);
         String userId = "1";
+        guessNumberGameService.register(userId);
 
         GuessNumberGame guessNumberGameStart = guessNumberGameService.start(userId);
 
